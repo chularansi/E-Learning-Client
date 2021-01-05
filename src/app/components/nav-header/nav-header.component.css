@@ -1,0 +1,44 @@
+/* @import "../../css-variables.css";
+
+header {
+  height: 66px;
+  padding-bottom: 2px;
+  background-image: linear-gradient(to right, #1bfbe4, #1bfbe4, #1bfbe4, #08a4bc);
+}
+
+.nav-bar {
+  background-color: red;
+  color: var(--secondary-text-color);
+}
+
+.navbar .navbar-brand{
+  color: var(--secondary-text-color);
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
+.navbar .navbar-nav{
+  margin: 0 auto;
+}
+
+.navbar .nav-item a{
+  color: var(--secondary-text-color);
+  font-weight: 300;
+  font-size: 1.0em;
+}
+
+.wrapper-2 {
+  width: 90%;
+} */
+
+.navbar-custom {
+  height: 60px;
+}
+
+.navbar .navbar-nav:first-child{
+  margin: 0 auto;
+}
+
+/* .user-details {
+  background-image: linear-gradient(to right, #1bfbe4, #1bfbe4, #1bfbe4, #08a4bc);
+} */

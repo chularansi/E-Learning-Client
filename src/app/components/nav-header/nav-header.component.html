@@ -1,0 +1,59 @@
+<header>
+  <nav class="navbar navbar-custom navbar-expand-md navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">
+        <img src="assets/images/logo-nav@2x.png" />
+        Navbar
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
+        <span class="navbar-toggler-user"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapse_target">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="collapse_dropdown">
+              Link
+              <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu rounded-0" aria-labelledby="collapse_dropdown">
+              <ul class="navbar-nav">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav user-details">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="collapse_dropdown_user">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+              </svg>
+              <!-- <img src="assets/images/user-default.png" /> -->
+              <span class="caret"></span>
+            </a>
+              <ul class="dropdown-menu rounded-0" aria-labelledby="collapse_dropdown_user">
+                <li>
+                  <a class="dropdown-item" routerLink="/register" routerLinkActive="active">Register</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/logout" routerLinkActive="active">Logout</a>
+                </li>
+              </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

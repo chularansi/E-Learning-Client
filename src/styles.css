@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./app/css-variables.css";
+
+* {
+  font-size: 14px;
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  color: var(--secondary-text-color);
+  /* color: #dce2e3; */
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  background-color: var(--main-background-color);
+}
+
+.btn-outline-dark {
+  border-radius: 0;
+}
