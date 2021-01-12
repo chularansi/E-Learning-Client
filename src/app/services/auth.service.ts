@@ -47,4 +47,22 @@ export class AuthService {
     // return this.http.post<any>(`${this.baseUrl}/logout`, user);
     // localStorage.removeItem('userId');
   }
+
+  forgotPassword(username: any): any {
+    const userEmail = {
+      email: username
+    };
+
+    return this.http.post<any>(`${this.baseUrl}/forgotPassword`, userEmail);
+  }
+
+  changePassword(userDetails: any): any {
+    const resetPwdData = {
+      oldPassword: userDetails.oldPwd,
+      newPassword: userDetails.newPwd,
+      email: localStorage.getItem('username')
+    };
+    console.log(resetPwdData);
+    return this.http.post<any>(`${this.baseUrl}/changePassword`, resetPwdData);
+  }
 }

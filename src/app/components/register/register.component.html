@@ -5,24 +5,37 @@
         <h3 class="mb-0">Register</h3>
       </div>
       <div class="card-body">
-        <form class="form">
+        <form class="form" [formGroup]="userRegisterForm" (ngSubmit)="registerUser()">
           <div class="form-group">
-            <label for="">First Name</label>
-            <input [(ngModel)]="registerUserData.firstname" name="firstname" type="text" class="form-control rounded-0" required />
+            <label for="firstname">Firstname</label>
+            <input formControlName="firstname" name="firstname" type="text" class="form-control rounded-0" required />
+          </div>
+          <div *ngIf="firstname.touched && firstname.errors" class="errorMessage">
+            <span *ngIf="firstname.hasError('required')">Firstname is required</span>
           </div>
           <div class="form-group">
-            <label for="">Last Name</label>
-            <input [(ngModel)]="registerUserData.lastname" name="lastname" type="text" class="form-control rounded-0" required />
+            <label for="lastname">Lastname</label>
+            <input formControlName="lastname" name="lastname" type="text" class="form-control rounded-0" required />
+          </div>
+          <div *ngIf="lastname.touched && lastname.errors" class="errorMessage">
+            <span *ngIf="lastname.hasError('required')">Lastname is required</span>
           </div>
           <div class="form-group">
-            <label for="">Email</label>
-            <input [(ngModel)]="registerUserData.username" name="username" type="text" class="form-control rounded-0" required />
+            <label for="username">Email</label>
+            <input formControlName="username" name="username" type="text" class="form-control rounded-0" required />
+          </div>
+          <div *ngIf="username.touched && username.errors" class="errorMessage">
+            <span *ngIf="username.hasError('required')">Email is required</span>
+            <span *ngIf="username.hasError('email')">Please provide a valid email</span>
           </div>
           <div class="form-group">
-            <label for="">Password</label>
-            <input [(ngModel)]="registerUserData.password" name="password" type="password" class="form-control rounded-0" required />
+            <label for="password">Password</label>
+            <input formControlName="password" name="password" type="password" class="form-control rounded-0" required />
           </div>
-          <button (click)="registerUser()" class="btn btn-outline-dark btn-sm float-right">Register</button>
+          <div *ngIf="password.touched && password.errors" class="errorMessage">
+            <span *ngIf="password.hasError('required')">Password is required</span>
+          </div>
+          <button [disabled]="userRegisterForm.invalid" type="submit" class="btn btn-outline-dark btn-sm float-right">Register</button>
         </form>
       </div>
     </div>

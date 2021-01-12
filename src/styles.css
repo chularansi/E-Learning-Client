@@ -18,3 +18,8 @@ body {
 .btn-outline-dark {
   border-radius: 0;
 }
+
+.errorMessage p {
+  color: #c62828;
+  font-size: 12px;
+}

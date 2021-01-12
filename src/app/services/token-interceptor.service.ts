@@ -32,13 +32,13 @@ export class TokenInterceptorService implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           switch ((err as HttpErrorResponse).status) {
             case 401:
-              if (err.error.header === 'Email Confirmation') {
+              if (err.error.message === 'Email is not confirmed') {
+                // We sent you an Confirmation Email. Please Confirm Your Registration to Log in
                 console.log(err.error);
               } else {
                 console.log('Token expired. Attempting refresh ...');
                 return this.handleHttpErrorResponse(request, next);
               }
-            // case 400:
           }
         }
 
