@@ -5,7 +5,6 @@
   font-size: 14px;
   font-family: Montserrat, Arial, Helvetica, sans-serif;
   color: var(--secondary-text-color);
-  /* color: #dce2e3; */
 }
 
 body {
@@ -15,11 +14,27 @@ body {
   background-color: var(--main-background-color);
 }
 
-.btn-outline-dark {
+/* .btn-outline-dark {
   border-radius: 0;
-}
+} */
 
 .errorMessage p {
   color: #c62828;
   font-size: 12px;
 }
+
+.page-link {
+  /* border-radius: 0 !important; */
+  color: var(--link-back-color);
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  color: var(--link-active-text-color);
+  background-color:var(--link-back-color);
+  border-color: var(--link-back-color);
+}
+
+/* .list-group {
+  border-radius: 0 !important;
+} */

@@ -1,14 +1,14 @@
 <header>
-  <nav class="navbar navbar-custom navbar-expand-md navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" routerLink="/home">
-        <img src="assets/images/logo-nav@2x.png" />
+        <!-- <img src="assets/images/logo-nav@2x.png" /> -->
         Navbar
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
-        <span class="navbar-toggler-user"></span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="collapse_target">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
@@ -18,7 +18,7 @@
               Link
               <span class="caret"></span>
             </a>
-            <div class="dropdown-menu rounded-0" aria-labelledby="collapse_dropdown">
+            <div class="dropdown-menu" aria-labelledby="collapse_dropdown">
               <ul class="navbar-nav">
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -27,10 +27,22 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item" *ngIf="authService.getRole() === 'Admin'">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+          </li>
         </ul>
 
         <ul class="navbar-nav user-details">
-          <li class="nav-item dropdown">
+          <li class="nav-item" *ngIf="!authService.loggedIn()">
+            <a class="nav-link" routerLink="/auth/register" routerLinkActive="active">Register</a>
+          </li>
+          <li class="nav-item" *ngIf="!authService.loggedIn()">
+            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active">Login</a>
+          </li>
+          <!-- <li class="nav-item" *ngIf="authService.loggedIn()">
+            <a class="nav-link" routerLink="/auth/logout" routerLinkActive="active">Logout</a>
+          </li> -->
+          <li class="nav-item dropdown" *ngIf="authService.loggedIn()">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="collapse_dropdown_user">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
@@ -40,18 +52,18 @@
               <!-- <img src="assets/images/user-default.png" /> -->
               <span class="caret"></span>
             </a>
-              <ul class="dropdown-menu rounded-0" aria-labelledby="collapse_dropdown_user">
+              <ul class="dropdown-menu" aria-labelledby="collapse_dropdown_user">
                 <li>
-                  <a class="dropdown-item" routerLink="/register" routerLinkActive="active">Register</a>
+                  <a class="dropdown-item" routerLink="/user/user-profile" routerLinkActive="active">Profile</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" routerLink="/login" routerLinkActive="active">Login</a>
+                  <a class="dropdown-item" routerLink="/user/user-setting" routerLinkActive="active">Settings</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" routerLink="/logout" routerLinkActive="active">Logout</a>
+                  <div class="dropdown-divider"></div>
                 </li>
                 <li>
-                  <a class="dropdown-item" routerLink="/change-pwd" routerLinkActive="active">Change Pwd</a>
+                  <a class="dropdown-item" routerLink="/auth/logout" routerLinkActive="active">Logout</a>
                 </li>
               </ul>
           </li>

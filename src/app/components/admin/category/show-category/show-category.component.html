@@ -1,0 +1,91 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-success btn-sm mb-3" data-toggle="modal"
+  data-target="#exampleModal" (click)="addCategory()" data-backdrop="static" data-keyboard="false">
+  Add Category
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeClick()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-category [category]="category" *ngIf="ActivateAddEditCategory"></app-add-edit-category>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <button (click)="addCategory()" class="btn btn-outline-success btn-sm mb-3">Add Category</button> -->
+
+<!-- <ul class="list-group mb-3">
+  <li *ngFor="let category of categories" class="list-group-item">
+    {{category.categoryName}}
+    <div class="float-right">
+      <button (click)="addCategory()" class="btn btn-outline-primary btn-sm mr-3">Edit</button>
+      <button (click)="deleteCategory(category.id, category.categoryName)" data-toggle="modal" data-target="#modalID" class="btn btn-outline-danger btn-sm">Delete</button>
+    </div>
+  </li>
+</ul> -->
+
+<div class="table-responsive">
+  <table class="table table-sm table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Category Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{category.categoryName}}</td>
+        <td style="text-align: right;">
+          <button type="button" class="btn btn-outline-primary btn-sm mr-3" data-toggle="modal"
+            data-target="#exampleModal" data-backdrop="static" data-keyboard="false"
+            (click)="editCategory(category)">
+            Edit
+          </button>
+          <button type="button" (click)="deleteCategory(category)" data-toggle="modal" data-target="#modalID"
+            class="btn btn-outline-danger btn-sm mr-1">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<nav class="mb-3" aria-label="Page navigation" *ngIf="pagination">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="pageNumber == 1">
+      <a class="page-link page-link" (click)="clickPage(1)" aria-label="First Page">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="pageNumber == 1">
+      <a class="page-link page-link" (click)="clickPage(pageNumber - 1)" aria-label="Previous">
+        <span aria-hidden="true">&lsaquo;</span>
+      </a>
+    </li>
+    <li class="page-item" [class.active]="pageNumber == page" *ngFor="let page of range(1, pagination.totalPages)">
+      <a class="page-link page-link" (click)="clickPage(page)">{{page}}</a>
+    </li>
+    <li class="page-item" [class.disabled]="pageNumber == pagination.totalPages">
+      <a class="page-link page-link" (click)="clickPage(pageNumber + 1)" aria-label="Next">
+        <span aria-hidden="true">&rsaquo;</span>
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="pageNumber == pagination.totalPages">
+      <a class="page-link page-link" (click)="clickPage(pagination.totalPages)" aria-label="Last Page">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<app-confirm-dialog (onConfirmClicked)="onConfirm($event)" [modalDialog]="modalDialog"></app-confirm-dialog>

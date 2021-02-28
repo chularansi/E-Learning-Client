@@ -1,0 +1,8 @@
+<!-- <form> -->
+  <div class="form-group">
+    <label for="name">Category Name</label>
+    <input type="text" class="form-control" id="name" [(ngModel)]="categoryName" placeholder="Enter Category Name">
+  </div>
+  <button class="btn btn-primary" *ngIf="category.id === 0" (click)="addCategory()">Add</button>
+  <button class="btn btn-primary" *ngIf="category.id !== 0" (click)="updateCategory()">Update</button>
+<!-- </form> -->

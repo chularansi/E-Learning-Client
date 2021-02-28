@@ -1,0 +1,21 @@
+<div class="row pt-5">
+  <div class="col-md-6 mx-auto">
+    <div class="card rounded-0">
+      <div class="card-header">
+        <h3 class="mb-0">Two Step Verification</h3>
+      </div>
+      <div class="card-body">
+        <form class="form" [formGroup]="twoFactorForm" (ngSubmit)="onSubmit()" autocomplete="off">
+          <div class="form-group">
+            <label for="twoFactorCode">Code</label>
+            <input formControlName="twoFactorCode" name="twoFactorCode" type="text" class="form-control rounded-0" required />
+          </div>
+          <div *ngIf="twoFactorCode.touched && twoFactorCode.errors" class="errorMessage">
+            <p *ngIf="twoFactorCode.hasError('required')">Code is required</p>
+          </div>
+          <button [disabled]="twoFactorForm.invalid" type="submit" class="btn btn-outline-dark btn-sm float-right">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

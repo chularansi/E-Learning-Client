@@ -14,13 +14,13 @@ export class HomeComponent implements OnInit {
   }
 
   testUser(): void {
-    this.authService.testUser().subscribe(
-      (res: any) => {
-        console.log(res);
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    );
+    // this.authService.testUser().subscribe(
+    //   (res: any) => {
+    //     console.log(res);
+    //   },
+    //   (err: any) => {
+    //     console.log(err);
+    //   }
+    // );
   }
 }

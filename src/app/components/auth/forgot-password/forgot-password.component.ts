@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPwdForm: FormGroup = new FormGroup({});
   email = new FormControl('', [Validators.required, Validators.email]);
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.forgotPwdForm = this.fb.group({
@@ -24,10 +25,18 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.authService.forgotPassword(userEmail).subscribe(
       (res: any) => {
-        console.log(res);
+        if (res.isSuccess) {
+          this.toastr.success(res.message, 'User Forgot Password', {
+            timeOut: 5000, closeButton: true
+          });
+        }
       },
       (err: any) => {
-        console.log(err);
+        if (!err.error.isSuccess) {
+          this.toastr.error(err.error.message, 'User Forgot Password', {
+            timeOut: 5000, closeButton: true
+          });
+        }
       }
     );
   }

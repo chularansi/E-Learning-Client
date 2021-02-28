@@ -1,6 +1,9 @@
 :root {
   --main-background-color: #F5F5F5;
-  --secondary-background-color: #09121c;;
+  --secondary-background-color: #09121c;
   /* --primary-text-color: #cccccc;
   --secondary-text-color: #849fb4; */
+  --link-back-color: #F57C00;
+  --link-text-color: #343a40;
+  --link-active-text-color: #fff;
 }

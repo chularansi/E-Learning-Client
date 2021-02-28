@@ -1,25 +1,23 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, finalize, switchMap, take, tap } from 'rxjs/operators';
-import { Token } from '../models/token';
+import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
+import { AuthResponse } from '../models/auth-response';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
-  private isTokenRefreshing = false;
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  tokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // if user logged in then clone the request and add the token for Authorization
-    // here we can ignore intercepting when we call meathod of user register and login
-    if (this.authService.loggedIn()) {
-      this.attachTokenToRequest(request);
+    if (this.authService.getToken()) {
+      request = this.addToken(request, this.authService.getToken());
     }
 
     return next.handle(request).pipe(
@@ -28,83 +26,72 @@ export class TokenInterceptorService implements HttpInterceptor {
           console.log('Success');
         }
       }),
-      catchError((err): Observable<any> => {
-        if (err instanceof HttpErrorResponse) {
-          switch ((err as HttpErrorResponse).status) {
-            case 401:
-              if (err.error.message === 'Email is not confirmed') {
-                // We sent you an Confirmation Email. Please Confirm Your Registration to Log in
-                console.log(err.error);
-              } else {
-                console.log('Token expired. Attempting refresh ...');
-                return this.handleHttpErrorResponse(request, next);
-              }
+      catchError(error => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          console.log('Token expired. Attempting refresh ...');
+          // if there are tokens then send refresh token request
+          if (this.authService.getToken() && this.authService.getRefreshToken()) {
+            console.log('come inside ...');
+            return this.handle401Error(request, next);
           }
+          // otherwise logout and redirect to login page
+          return this.logoutAndRedirect(error);
         }
 
-        return throwError(err);
-      })
-    );
+        // in case of 403 http error (refresh token failed)
+        if (error instanceof HttpErrorResponse && error.status === 403) {
+          // logout and redirect to login page
+          return this.logoutAndRedirect(error);
+        }
+
+        // if error has status neither 401 nor 403 then just return this error
+        return throwError(error);
+    }));
   }
 
-  private handleHttpErrorResponse(request: HttpRequest<any>, next: HttpHandler): any {
-    // first thing to check if the token is in process of refreshing
-    if (!this.isTokenRefreshing) { // if the tokenRefreshing is not true
-      this.isTokenRefreshing = true;
+  private addToken(request: HttpRequest<any>, token: string | null): HttpRequest<any> {
+    if (token) {
+      // console.log('add token', token);
+      return request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
 
-      // is there any existing value then set to empty
-      // reset here so that the following request wait until the token comes from the refresh token API call
-      this.tokenSubject.next(null);
+    return request;
+  }
 
-      // call the API to refresh the token
-      return this.authService.refreshUser().pipe(
-        switchMap((tokenResponse: Token) => {
-          // console.log(tokenResponse);
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject.next(null);
 
-          if (tokenResponse) {
-            this.tokenSubject.next(tokenResponse.token);
+      return this.authService.refreshToken().pipe(
+        switchMap((response: AuthResponse) => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(response.token);
+          // repeat failed request with new token
+          return next.handle(this.addToken(request, response.token));
+        }));
 
-            localStorage.setItem('username', String(tokenResponse.username)),
-            localStorage.setItem('token', String(tokenResponse.token));
-            localStorage.setItem('refreshToken', String(tokenResponse.refreshToken));
-            localStorage.setItem('roles', String(tokenResponse.roles));
-            console.log('Token refreshed...');
-
-            // continue with the request that initialized the whole method
-            return next.handle(this.attachTokenToRequest(request));
-          } else {
-            // if refresh token request not response that is mean the user should log manually
-            // therefore we have to logged out first
-            return this.authService.logout();
-          }
-        }),
-        catchError(err => { // handle other errors ex: network errors
-          this.authService.logout();
-          return throwError(err);
-        }),
-        finalize(() => {
-          this.isTokenRefreshing = false;
-        })
-      );
-    } else { // this part execute only when the refresh token is received back
-      // this.isTokenRefreshing = false;
-      return this.tokenSubject.pipe(
-        // filter holds other requests until the value in the tokenSubject
-        // is different than null
+    } else {
+      // wait while getting new token
+      return this.refreshTokenSubject.pipe(
+        // filter holds other requests until the value in the tokenSubject is different than null
         filter(token => token != null),
         take(1), // take one event from that tokenSubject
-        switchMap(token => { // and release the request that initialized
-          return next.handle(this.attachTokenToRequest(request));
+        switchMap(jwtToken => {
+          // repeat failed request with new token
+          return next.handle(this.addToken(request, jwtToken));
         })
       );
     }
   }
 
-  private attachTokenToRequest(request: HttpRequest<any>): HttpRequest<any> {
-    return request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.authService.getToken()}`
-      }
-    });
+  private logoutAndRedirect(err: any): Observable<HttpEvent<any>> {
+    this.authService.logout();
+    this.router.navigateByUrl('/auth/login');
+    return throwError(err);
   }
 }

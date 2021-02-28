@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-nav-header',
@@ -6,14 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-header.component.css']
 })
 export class NavHeaderComponent implements OnInit {
-  navbarCollapsed = true;
+  roleAdmin = false;
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
-  }
-
-  toggleNavbarCollapsing(): void {
-    this.navbarCollapsed = !this.navbarCollapsed;
+    if (this.authService.getRole() === 'Admin') {
+      this.roleAdmin = true;
+    }
   }
 }

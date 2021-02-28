@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
       (res: any) => {
         if (res.isSuccess) {
           this.toastr.success(res.message, 'User Registration', {
-            timeOut: 8000, closeButton: true
+            timeOut: 5000, closeButton: true
           });
         }
       },

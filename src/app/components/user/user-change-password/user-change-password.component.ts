@@ -4,11 +4,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ValidatorService } from 'src/app/validators/validator.service';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css']
+  selector: 'app-user-change-password',
+  templateUrl: './user-change-password.component.html',
+  styleUrls: ['./user-change-password.component.css']
 })
-export class ChangePasswordComponent implements OnInit {
+export class UserChangePasswordComponent implements OnInit {
   changePwdForm: FormGroup = new FormGroup({});
 
   oldPwd = new FormControl('', [Validators.required]);
@@ -43,4 +43,3 @@ export class ChangePasswordComponent implements OnInit {
     }
   }
 }
-

@@ -10,3 +10,19 @@ export interface UserRegister {
   password: string;
 }
 
+export interface ForgotPassword {
+  email: string;
+  clientURI: string;
+}
+
+export interface ResetPassword {
+  password: string;
+  email: string;
+  token: string;
+}
+
+export interface TwoFactor {
+  email: string;
+  provider: string;
+  token: string;
+}
